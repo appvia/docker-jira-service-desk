@@ -1,5 +1,7 @@
 # Docker image for Atlassian JIRA Service Desk
 
+[![Docker Repository on Quay](https://quay.io/repository/appvia/atlassian-jira-service-desk/status "Docker Repository on Quay")](https://quay.io/repository/appvia/atlassian-jira-service-desk)
+
 ## Configuration
 
 Image expects the following MySQL database configuration:
