@@ -10,3 +10,9 @@ Image expects the following MySQL database configuration:
 * `DB_USER` - databae user, defaults to `root`
 * `DB_PASS` - database password
 * `DB_POOL` - min / max connection pool
+* `X_PROXY_NAME` - Sets the Tomcat Connectors ProxyName attribute
+* `X_PROXY_PORT` - Sets the Tomcat Connectors ProxyPort attribute
+* `X_PROXY_SCHEME` - If set to https the Tomcat Connectors secure=true and redirectPort equal to X_PROXY_PORT
+* `X_PATH` - Sets the Tomcat connectors path attribute
+
+NOTE: SSL is enforced on MySQL database connection.

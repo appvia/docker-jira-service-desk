@@ -27,6 +27,8 @@ if [[ -z ${DB_PASS} ]]; then
   exit 1
 fi
 
+cp /var/atlassian/dbconfig.xml /var/atlassian/jira/dbconfig.xml
+
 sed -e "s/{{DB_HOST_NAME}}/${DB_HOST_NAME}/" \
     -e "s/{{DB_HOST_PORT}}/${DB_HOST_PORT}/" \
     -e "s/{{DB_NAME}}/${DB_NAME}/" \
