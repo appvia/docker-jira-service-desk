@@ -1,0 +1,52 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build Image
+          command: docker build -t appvia/atlassian-jira-service-desk:$CIRCLE_SHA1 .
+
+  push_latest:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Push to Quay with tag latest
+          command: |
+            docker build -t quay.io/appvia/atlassian-jira-service-desk:latest .
+            docker login quay.io --username $QUAY_USERNAME --password $QUAY_PASSWORD
+            docker push quay.io/appvia/atlassian-jira-service-desk:latest
+
+  push_tag:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Push to Quay with Git tag
+          command: |
+            docker build -t quay.io/appvia/atlassian-jira-service-desk:$CIRCLE_TAG .
+            docker login quay.io --username $QUAY_USERNAME --password $QUAY_PASSWORD
+            docker push quay.io/appvia/atlassian-jira-service-desk:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  run_build:
+    jobs:
+      - build
+      - push_latest:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              ignore: /.*/
+      - push_tag:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
