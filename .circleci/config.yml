@@ -1,12 +1,19 @@
-version: 2
+version: 2.1
+orbs:
+  anchore: anchore/anchore-engine@1.6.0
+
 jobs:
-  build:
+  local_image_scan:
     machine: true
+    executor: anchore/anchore_engine
     steps:
       - checkout
       - run:
           name: Build Image
           command: docker build -t appvia/atlassian-jira-service-desk:$CIRCLE_SHA1 .
+      - anchore/analyze_local_image:
+          image_name: appvia/atlassian-jira-service-desk:$CIRCLE_SHA1
+          analysis_fail: True
 
   push_latest:
     machine: true
@@ -31,13 +38,13 @@ jobs:
             docker push quay.io/appvia/atlassian-jira-service-desk:$CIRCLE_TAG
 
 workflows:
-  version: 2
+  version: 2.1
   run_build:
     jobs:
-      - build
+      - local_image_scan
       - push_latest:
           requires:
-            - build
+            - local_image_scan
           filters:
             branches:
               only:
