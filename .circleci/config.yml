@@ -4,16 +4,16 @@ orbs:
 
 jobs:
   local_image_scan:
-    machine: true
     executor: anchore/anchore_engine
     steps:
+      - setup_remote_docker
       - checkout
       - run:
           name: Build Image
           command: docker build -t appvia/atlassian-jira-service-desk:$CIRCLE_SHA1 .
       - anchore/analyze_local_image:
           image_name: appvia/atlassian-jira-service-desk:$CIRCLE_SHA1
-          analysis_fail: True
+          policy_failure: true
 
   push_latest:
     machine: true
