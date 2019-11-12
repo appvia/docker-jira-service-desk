@@ -2,6 +2,10 @@ FROM cptactionhank/atlassian-jira-service-desk:latest
 
 USER 0
 
+RUN apk update && apk upgrade  
+
+RUN  apk --upgrade add openjdk8
+
 RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem \
       -O /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem && \
     update-ca-certificates
